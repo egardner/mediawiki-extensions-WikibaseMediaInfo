@@ -18,6 +18,7 @@
 var mapState = require( 'vuex' ).mapState,
 	mapGetters = require( 'vuex' ).mapGetters,
 	ImageResult = require( './ImageResult.vue' ),
+	VideoResult = require( './VideoResult.vue' ),
 	GenericResult = require( './GenericResult.vue' ),
 	Observer = require( './base/Observer.vue');
 
@@ -27,6 +28,7 @@ module.exports = {
 	components: {
 		'observer': Observer,
 		'image-result': ImageResult,
+		'video-result': VideoResult,
 		'generic-result': GenericResult
 	},
 
@@ -45,6 +47,8 @@ module.exports = {
 		resultComponent: function () {
 			if ( this.mediaType === 'bitmap' ) {
 				return 'image-result'
+			} else if ( this.mediaType === 'video' ) {
+				return 'video-result'
 			} else {
 				return 'generic-result'
 			}
