@@ -45,7 +45,7 @@ module.exports = {
 		} else {
 			// params used in all non-category searches
 			params.gmssearch = options.term;
-			params.iiprop = 'url|size|mime';
+			params.iiprop = 'url|size|mime|extmetadata';
 			params.iiurlheight = options.type === 'bitmap' ? 180 : undefined;
 			params.iiurlwidth = options.type === 'video' ? 200 : undefined;
 			params.wbptterms = 'label';
