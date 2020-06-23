@@ -40,7 +40,8 @@ module.exports = {
 	},
 
 	computed: $.extend( {}, mapState( [
-		'results'
+		'results',
+		'pending'
 	] ), mapGetters( [
 		'sortedResults'
 	] ), {
@@ -66,8 +67,9 @@ module.exports = {
 <style lang="less">
 @import 'mediawiki.mixins';
 
-.wbmi-mediasearch-results {
-	&--bitmap {
+.wbmi-media-search-results {
+	&--bitmap,
+	&--video {
 		.flex-display();
 		.flex-wrap();
 	}

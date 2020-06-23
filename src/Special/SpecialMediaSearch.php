@@ -255,7 +255,7 @@ class SpecialMediaSearch extends UnlistedSpecialPage {
 				'gmscontinue' => $continue,
 				'prop' => 'info|imageinfo|pageterms',
 				'inprop' => 'url',
-				'iiprop' => 'url|size|mime|extmetadata',
+				'iiprop' => 'url|size|mime',
 				'iiurlheight' => $type === 'bitmap' ? 180 : null,
 				'iiurlwidth' => $type === 'video' ? 200 : null,
 				'wbptterms' => 'label',

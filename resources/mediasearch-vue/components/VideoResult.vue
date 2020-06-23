@@ -1,76 +1,31 @@
 <template>
-	<div class="wbmi-video-result">
-		<!-- Thumbnail is image-only for now; maybe we only want video on detail expand? -->
-		<div class="wmbi-video-result__thumbnail">
-			<img v-bind:src="thumbnail" v-bind:alt="title">
-		</div>
+	<div v-bind:class="{ 'wbmi-video-result--expanded': expanded }" 
+		class="wbmi-video-result">
 
-		<!-- What else can we expect to be available here with reasonable frequency? -->
-		<div class="wbmi-video-result__info">
-			<h3>
-				<a v-bind:href="url">
-					{{ title }}
-				</a>
-			</h3>
+		<img v-bind:src="thumbnail" 
+			v-bind:alt="title"
+			class="wbmi-video-result__thumbnail"
+			loading="lazy"
+		>
 
-			<!-- Description text tends to be in HTML. Is there a way to strip this out easily? -->
-			<p>{{ description }}</p>
-		</div>
+		<h6 class="wbmi-video-result__title">
+			<a v-bind:href="url">
+				{{ title }}
+			</a>
+		</h6>
 	</div>
 </template>
 
 <script>
+var searchResult = require( '../mixins/searchResult.js' );
+
 // @vue/component
 module.exports = {
 	name: 'VideoResult',
 
-	props: [ 'result' ],
+	mixins: [ searchResult ],
 
 	computed: {
-		metadata: function () {
-			if ( this.result.imageinfo && this.result.imageinfo[ 0 ].extmetadata ) {
-				return this.result.imageinfo[ 0 ].extmetadata
-			}
-		},
-
-		artist: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'Author' ].value
-			}
-		},
-
-		attribution: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'Attribution' ].value
-			}
-		},
-
-		categories: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'Categories' ].value
-			}
-		},
-
-		date: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'DateTime' ].value
-			}
-		},
-
-		description: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'ImageDescription' ].value
-			}
-		},
-
-		title: function () {
-			if ( this.metadata ) {
-				return this.metadata[ 'ObjectName' ].value
-			} else {
-				return this.result.title
-			}
-		},
-
 		duration: function () {
 			return Math.round( this.result.imageinfo[ 0 ].duration );
 		},
@@ -86,18 +41,8 @@ module.exports = {
 			return width + 'x' + height;
 		},
 
-		thumbnail: function () {
-			return this.result.imageinfo[ 0 ].thumburl;
-		},
+	},
 
-		src: function () {
-			return this.result.imageinfo[ 0 ].url;
-		},
-
-		url: function () {
-			return this.result.canonicalurl;
-		}
-	}
 };
 </script>
 
@@ -106,19 +51,47 @@ module.exports = {
 @import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-video-result {
-	.flex-display();
-	.flex-wrap( no-wrap );
-	flex-direction: row;
-	margin-bottom: 16px;
+	.flex( 1, 0, 15% );
+	box-sizing: border-box;
+	padding: 8px;
 
-	&__thumbnail {
-		.flex( 0 0 200px );
+	&--expanded {
+		.flex( 0, 0, 100% );
 	}
 
-	&__info {
-		.flex( 1 1 auto );
-		padding: 0 8px;
-	}
+	&__thumbnail {}
+
+
+	// .flex-display();
+	// .flex-wrap( no-wrap );
+	// flex-direction: row;
+	// margin-bottom: 16px;
+
+	// & &__thumbnail {
+	// 	.flex( 0 0 200px );
+	// }
+
+	// & &__info {
+	// 	.flex( 1 1 auto );
+	// 	padding: 0 8px;
+	// }
+
+	// & &__title {
+	// 	margin: 0;
+	// 	padding: 0;
+	// }
+
+	// & &__header {
+	// 	// margin-bottom: 16px;
+	// 	margin: 0;
+	// 	padding: 0;
+	// }
+
+	// & &__meta {
+	// 	color: @color-base--subtle;
+	// 	margin: 0;
+	// 	padding: 0;
+	// }
 }
 </style>
 

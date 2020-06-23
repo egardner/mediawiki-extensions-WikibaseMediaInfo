@@ -344,7 +344,8 @@
 				"resources/mediasearch-vue/store/state.js",
 				"resources/mediasearch-vue/store/mutations.js",
 				"resources/mediasearch-vue/store/getters.js",
-				"resources/mediasearch-vue/store/actions.js"
+				"resources/mediasearch-vue/store/actions.js",
+				"resources/mediasearch-vue/mixins/searchResult.js"
 			],
 			"messages": [
 				"wikibasemediainfo-special-mediasearch-filter-size",
