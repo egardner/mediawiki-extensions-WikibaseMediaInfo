@@ -2,15 +2,13 @@
 	<div v-bind:class="'wbmi-media-search-results--' + mediaType"
 		class="wbmi-media-search-results">
 
-		<template v-for="(result, index) in sortedResults[ mediaType ]">
-			<component
-				v-bind:is="resultComponent"
-				v-bind:result="result"
-				v-bind:key="index"
-			/>
-		</template>
+		<component
+			v-for="(result, index) in sortedResults[ mediaType ]"
+			v-bind:is="resultComponent"
+			v-bind:result="result"
+			v-bind:key="index"
+		/>
 
-		<observer v-on:intersect="onIntersect" />
 	</div>
 </template>
 
@@ -19,14 +17,12 @@ var mapState = require( 'vuex' ).mapState,
 	mapGetters = require( 'vuex' ).mapGetters,
 	ImageResult = require( './ImageResult.vue' ),
 	VideoResult = require( './VideoResult.vue' ),
-	GenericResult = require( './GenericResult.vue' ),
-	Observer = require( './base/Observer.vue');
+	GenericResult = require( './GenericResult.vue' );
 
 module.exports = {
 	name: 'SearchResults',
 
 	components: {
-		'observer': Observer,
 		'image-result': ImageResult,
 		'video-result': VideoResult,
 		'generic-result': GenericResult
@@ -54,25 +50,26 @@ module.exports = {
 				return 'generic-result'
 			}
 		}
-	} ),
-
-	methods: {
-		onIntersect: function ( event ) {
-			this.$emit( 'load-more' );
-		}
-	}
+	} )
 };
 </script>
 
 <style lang="less">
 @import 'mediawiki.mixins';
+@import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-media-search-results {
+
+	// Image and Video results have a grid layout using Flexbox
 	&--bitmap,
 	&--video {
 		.flex-display();
-		.flex-wrap();
+		.flex-wrap( wrap );
 	}
+
+	// TODO: mobile image grid switches to vertical columns with fixed width
+	// instead of horizontal rows with fixed height.
+	// &--bitmap {}
 }
 
 </style>

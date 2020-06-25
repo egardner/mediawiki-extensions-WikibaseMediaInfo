@@ -5,35 +5,24 @@
 			v-on:update="onUpdateTerm"
 		/>
 
-		<tabs v-bind:active="currentTab" v-on:tab-change="onTabChange">
-			<tab name="bitmap" v-bind:title="bitmapTabTitle">
-				<search-results
-					media-type="bitmap"
-					v-on:load-more="getMoreResultsForTabIfAvailable( 'bitmap' )"
-				/>
-			</tab>
+		<!-- Generate a tab for each key in the "results" object. Data types,
+		messages, and loading behavior are bound to this key. -->
+		<tabs v-bind:active="currentTab"
+			v-on:tab-change="onTabChange">
 
-			<tab name="audio" v-bind:title="audioTabTitle">
-				<search-results
-					media-type="audio"
-					v-on:load-more="getMoreResultsForTabIfAvailable( 'audio' )"
-				/>
-			</tab>
+			<tab v-for="tab in tabs"
+				v-bind:name="tab"
+				v-bind:title="tabNames[ tab ]"
+				v-bind:key="tab">
 
-			<tab name="video" v-bind:title="videoTabTitle">
-				<search-results
-					media-type="video"
-					v-on:load-more="getMoreResultsForTabIfAvailable( 'video' )"
-				/>
-			</tab>
-
-			<tab name="category" v-bind:title="categoryTabTitle">
-				<search-results
-					media-type="category"
-					v-on:load-more="getMoreResultsForTabIfAvailable( 'category' )"
-				/>
+				<search-results v-bind:media-type="tab" />
+				<observer v-on:intersect="getMoreResultsForTabIfAvailable( tab )" />
+				<p v-if="pending[ tab ]">
+					Loading...
+				</p>
 			</tab>
 		</tabs>
+
 	</div>
 </template>
 
@@ -46,6 +35,7 @@ var mapState = require( 'vuex' ).mapState,
 	Tabs = require( './base/Tabs.vue' ),
 	SearchInput = require( './SearchInput.vue' ),
 	SearchResults = require( './SearchResults.vue' ),
+	Observer = require( './base/Observer.vue'),
 	url = new mw.Uri();
 
 module.exports = {
@@ -55,7 +45,8 @@ module.exports = {
 		tabs: Tabs,
 		tab: Tab,
 		'search-input': SearchInput,
-		'search-results': SearchResults
+		'search-results': SearchResults,
+		'observer': Observer
 	},
 
 	data: function () {
@@ -66,26 +57,28 @@ module.exports = {
 	},
 
 	computed: $.extend( {}, mapState( [
+		'results',
 		'continue',
 		'pending'
 	] ), mapGetters( [
 		'hasMore'
 	] ), {
 
-		bitmapTabTitle: function () {
-			return this.$i18n( 'wikibasemediainfo-special-mediasearch-tab-bitmap' ).text();
+		tabs: function () {
+			return Object.keys( this.results );
 		},
 
-		audioTabTitle: function () {
-			return this.$i18n( 'wikibasemediainfo-special-mediasearch-tab-audio' ).text();
-		},
+		tabNames: function () {
+			var names = {},
+				prefix = 'wikibasemediainfo-special-mediasearch-tab-';
 
-		videoTabTitle: function () {
-			return this.$i18n( 'wikibasemediainfo-special-mediasearch-tab-video' ).text();
-		},
+			// Get the i18n message for each tab title and assign to appropriate
+			// key in returned object
+			this.tabs.forEach( function ( tab ) {
+				names[ tab ] = this.$i18n( prefix + tab ).text();
+			}.bind( this ) );
 
-		categoryTabTitle: function () {
-			return this.$i18n( 'wikibasemediainfo-special-mediasearch-tab-category' ).text();
+			return names;
 		}
 	} ),
 

@@ -1,13 +1,8 @@
 <template>
-	<div class="wbmi-image-result" v-bind:style="wrapperStyle" >
-		<div v-bind:style="aspectRatio">
-		</div>
-
-		<img 
+	<div class="wbmi-image-result" v-bind:style="baseWidth">
+		<img
 			v-bind:src="thumbnail"
 			v-bind:alt="title"
-			class="wbmi-image-result__thumbnail"
-			loading="lazy"
 		>
 	</div>
 </template>
@@ -30,20 +25,12 @@ module.exports = {
 		},
 
 		aspectRatio: function () {
-			var ratio = this.height / this.width;
-
-			return {
-				'padding-top': ratio * 100 + '%'
-			};
+			return this.width / this.height;
 		},
 
-		wrapperStyle: function () {
-			var wrapperWidth = this.width * 200 / this.height,
-				wrapperFlex = this.width * 200 / this.height;
-
+		baseWidth: function () {
 			return {
-				width: wrapperWidth + 'px',
-				'flex-grow': wrapperFlex
+				'flex-basis': Math.round( 180 * this.aspectRatio ) + 'px'
 			};
 		}
 	}
@@ -53,22 +40,37 @@ module.exports = {
 
 <style lang="less">
 @import 'mediawiki.mixins';
+@import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-image-result {
-	// .flex( 0, 1, auto );
-	// box-sizing: border-box;
-	height: 200px;
-	margin: 8px;
-	overflow: hidden;
-	position: relative;
+	box-sizing: border-box;
+	padding: 8px;
 
-	&__thumbnail {
-		height: 100%;
-		left: 0;
+	.flex( 0, 0, 50% );
+
+	@media screen and ( min-width: @width-breakpoint-tablet ) {
+		.flex( 1, 1, auto );
+	}
+
+	.flex( 1, 1, auto );
+
+	&:last-child {
+		.flex( 0, 1, auto );
+	}
+
+	img {
+		height: 180px;
+		min-width: 100px;
 		object-fit: cover;
-		position: absolute;
-		top: 0;
+		object-position: center center;
 		width: 100%;
+	}
+
+	&__title {
+		height: 20px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }
 </style>
