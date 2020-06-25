@@ -43,16 +43,9 @@ module.exports = {
 @import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-image-result {
+	.flex( 1, 1, auto );
 	box-sizing: border-box;
 	padding: 8px;
-
-	.flex( 0, 0, 50% );
-
-	@media screen and ( min-width: @width-breakpoint-tablet ) {
-		.flex( 1, 1, auto );
-	}
-
-	.flex( 1, 1, auto );
 
 	&:last-child {
 		.flex( 0, 1, auto );

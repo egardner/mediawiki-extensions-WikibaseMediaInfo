@@ -54,44 +54,6 @@ module.exports = {
 	.flex( 1, 0, 15% );
 	box-sizing: border-box;
 	padding: 8px;
-
-	&--expanded {
-		.flex( 0, 0, 100% );
-	}
-
-	&__thumbnail {}
-
-
-	// .flex-display();
-	// .flex-wrap( no-wrap );
-	// flex-direction: row;
-	// margin-bottom: 16px;
-
-	// & &__thumbnail {
-	// 	.flex( 0 0 200px );
-	// }
-
-	// & &__info {
-	// 	.flex( 1 1 auto );
-	// 	padding: 0 8px;
-	// }
-
-	// & &__title {
-	// 	margin: 0;
-	// 	padding: 0;
-	// }
-
-	// & &__header {
-	// 	// margin-bottom: 16px;
-	// 	margin: 0;
-	// 	padding: 0;
-	// }
-
-	// & &__meta {
-	// 	color: @color-base--subtle;
-	// 	margin: 0;
-	// 	padding: 0;
-	// }
 }
 </style>
 
