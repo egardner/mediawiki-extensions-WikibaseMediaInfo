@@ -1,6 +1,5 @@
 <template>
-	<div v-bind:class="{ 'wbmi-video-result--expanded': expanded }" 
-		class="wbmi-video-result">
+	<div class="wbmi-video-result" v-on:click="showDetails">
 
 		<img v-bind:src="thumbnail" 
 			v-bind:alt="title"

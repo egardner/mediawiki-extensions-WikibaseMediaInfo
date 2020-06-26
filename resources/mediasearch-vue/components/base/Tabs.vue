@@ -229,7 +229,8 @@ module.exports = {
 	}
 
 	&__content {
-		padding: 20px;
+		padding-top: 16px;
+		// padding: 20px;
 	}
 }
 </style>

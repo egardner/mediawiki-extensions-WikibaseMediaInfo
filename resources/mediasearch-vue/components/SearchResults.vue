@@ -1,37 +1,70 @@
 <template>
-	<div v-bind:class="'wbmi-media-search-results--' + mediaType"
-		class="wbmi-media-search-results">
+	<div class="wbmi-media-search-results">
+		<div v-bind:class="'wbmi-media-search-results__list--' + mediaType"
+			class="wbmi-media-search-results__list">
 
-		<component
-			v-for="(result, index) in sortedResults[ mediaType ]"
-			v-bind:is="resultComponent"
-			v-bind:result="result"
-			v-bind:key="index"
-		/>
+			<component
+				v-for="(result, index) in sortedResults[ mediaType ]"
+				v-bind:is="resultComponent"
+				v-bind:result="result"
+				v-bind:key="index"
+				v-on:show-details="showDetails"
+			/>
 
+		</div>
+
+		<aside class="wbmi-media-search-results__details"
+			v-bind:class="{ 'wbmi-media-search-results__details--expanded': !!details }">
+
+			<quick-view 
+				v-if="details"
+				v-bind:details="details" 
+				v-on:close="hideDetails"
+			/>
+
+		</aside>
 	</div>
 </template>
 
 <script>
+/**
+ * @file SearchResults.vue
+ * 
+ * The SearchResults component is responsible for displaying a list or grid of
+ * search results, regardless of media type. Appearance and behavior will vary
+ * depending on the value of the mediaType prop.
+ * 
+ * The SearchResults component is also responsible for displaying an expanded
+ * preview for a specific result if triggered by user actions.
+ */
 var mapState = require( 'vuex' ).mapState,
 	mapGetters = require( 'vuex' ).mapGetters,
 	ImageResult = require( './ImageResult.vue' ),
 	VideoResult = require( './VideoResult.vue' ),
-	GenericResult = require( './GenericResult.vue' );
+	GenericResult = require( './GenericResult.vue' ),
+	QuickView = require( './QuickView.vue' );
 
+// @vue/component
 module.exports = {
 	name: 'SearchResults',
 
 	components: {
 		'image-result': ImageResult,
 		'video-result': VideoResult,
-		'generic-result': GenericResult
+		'generic-result': GenericResult,
+		'quick-view': QuickView
 	},
 
 	props: {
 		mediaType: {
 			type: String,
 			required: true
+		}
+	},
+
+	data: function () {
+		return {
+			details: null
 		}
 	},
 
@@ -50,7 +83,17 @@ module.exports = {
 				return 'generic-result'
 			}
 		}
-	} )
+	} ),
+
+	methods: {
+		showDetails: function ( resultDetails ) {
+			this.details = resultDetails;
+		},
+
+		hideDetails: function () {
+			this.details = null;
+		}
+	}
 };
 </script>
 
@@ -59,17 +102,34 @@ module.exports = {
 @import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-media-search-results {
+	.flex-display();
+	.flex-wrap( nowrap );
 
-	// Image and Video results have a grid layout using Flexbox
-	&--bitmap,
-	&--video {
-		.flex-display();
-		.flex-wrap( wrap );
+	&__list {
+		.flex( 1, 1, auto );
+		// transition: all ease-in-out 0.3s;
+
+		// Image and Video results have a grid layout using Flexbox
+		&--bitmap,
+		&--video {
+			.flex-display();
+			.flex-wrap( wrap );
+		}
+		// TODO: mobile image grid switches to vertical columns with fixed width
+		// instead of horizontal rows with fixed height.
+		// &--bitmap {}
 	}
 
-	// TODO: mobile image grid switches to vertical columns with fixed width
-	// instead of horizontal rows with fixed height.
-	// &--bitmap {}
-}
+	&__details {
+		.flex( 0, 0, auto );
+		max-width: 30rem;
+		width: 0%;
+		// transition: all ease-in-out 0.3s;
 
+		&--expanded {
+			.flex( 1, 0, auto );
+			width: 50%;
+		}
+	}
+}
 </style>

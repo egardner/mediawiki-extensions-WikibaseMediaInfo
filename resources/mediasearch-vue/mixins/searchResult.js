@@ -9,8 +9,7 @@
  *    the API for convenience; some of these will only be present if additional
  *    metadata has been fetched
  * 3. Local state representing whether a follow-up API request for additional
- *    metadata has been made (and the results, if so) as well as whether or not
- *    the result has been "expanded"
+ *    metadata has been made (and the results, if so)
  * 4. Some re-usable methods (to request metadata, strip out HTML, etc)
  *
  * Individual Result components that implement this mixin can decide for
@@ -27,8 +26,7 @@ module.exports = {
 	data: function () {
 		return {
 			metadata: null,
-			pending: false,
-			expanded: false
+			pending: false
 		};
 	},
 
@@ -138,6 +136,37 @@ module.exports = {
 				// this.$dispatch( 'displayMessage', error ) or something like that
 			} ).done( function () {
 				this.pending = false;
+			}.bind( this ) );
+		},
+
+		/**
+		 * Fetch additional (expensive) metadata from the API for the result if
+		 * necessary, and then emit a show-details event with the relevant data
+		 * as a payload.
+		 *
+		 * @fires show-details
+		 */
+		showDetails: function () {
+			// If metadata has already been fetched, don't request it again
+			var metadataPromise = this.metadata ?
+				$.Deferred().resolve().promise() :
+				this.fetchMetadata();
+
+			metadataPromise.then( function () {
+				// payload is created via deep copy ($.extend w/ true arg)
+				// because we only care about passing on the data, not the
+				// reactive properties that Vue adds to objects in component
+				// state
+				var payload = $.extend(
+					true,
+					{},
+					this.result,
+					{ metadata: this.metadata }
+				);
+
+				// Emit a "show-details" event containing the details of the
+				// relevant search result to be displayed by the parent
+				this.$emit( 'show-details', payload );
 			}.bind( this ) );
 		}
 	}
