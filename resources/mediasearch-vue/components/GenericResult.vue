@@ -1,6 +1,8 @@
 <template>
 	<div class="wbmi-generic-result">
-		{{ result.title }}
+		<a :href="result.canonicalurl">
+			{{ result.title }}
+		</a>
 	</div>
 </template>
 

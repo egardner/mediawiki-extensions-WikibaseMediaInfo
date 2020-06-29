@@ -9,7 +9,11 @@
 		</header>
 
 		<div class="wbmi-media-search-quick-view__body">
-			<h3>{{ details.title }}</h3>
+			<h3>
+				<a :href="details.canonicalurl">
+					{{ details.title }}
+				</a>
+			</h3>
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<p v-html="details.metadata.ImageDescription.value"></p>
 		</div>

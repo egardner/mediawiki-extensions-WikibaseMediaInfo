@@ -8,7 +8,7 @@
 		>
 
 		<h6 class="wbmi-video-result__title">
-			<a :href="url">{{ title }}</a>
+			{{ title }}
 		</h6>
 	</div>
 </template>
