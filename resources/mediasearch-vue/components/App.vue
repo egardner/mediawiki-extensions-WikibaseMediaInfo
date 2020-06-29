@@ -1,28 +1,21 @@
 <template>
-	<div class="" id="app">
-		<search-input 
-			v-bind:initial-term="term"
-			v-on:update="onUpdateTerm"
-		/>
+	<div id="app" class="">
+		<search-input :initial-term="term" @update="onUpdateTerm"></search-input>
 
 		<!-- Generate a tab for each key in the "results" object. Data types,
 		messages, and loading behavior are bound to this key. -->
-		<tabs v-bind:active="currentTab"
-			v-on:tab-change="onTabChange">
-
+		<tabs :active="currentTab" @tab-change="onTabChange">
 			<tab v-for="tab in tabs"
-				v-bind:name="tab"
-				v-bind:title="tabNames[ tab ]"
-				v-bind:key="tab">
-
-				<search-results v-bind:media-type="tab" />
-				<observer v-on:intersect="getMoreResultsForTabIfAvailable( tab )" />
+				:key="tab"
+				:name="tab"
+				:title="tabNames[ tab ]">
+				<search-results :media-type="tab"></search-results>
+				<observer @intersect="getMoreResultsForTabIfAvailable( tab )"></observer>
 				<p v-if="pending[ tab ]">
 					Loading...
 				</p>
 			</tab>
 		</tabs>
-
 	</div>
 </template>
 
@@ -35,7 +28,7 @@ var mapState = require( 'vuex' ).mapState,
 	Tabs = require( './base/Tabs.vue' ),
 	SearchInput = require( './SearchInput.vue' ),
 	SearchResults = require( './SearchResults.vue' ),
-	Observer = require( './base/Observer.vue'),
+	Observer = require( './base/Observer.vue' ),
 	url = new mw.Uri();
 
 module.exports = {
@@ -46,7 +39,7 @@ module.exports = {
 		tab: Tab,
 		'search-input': SearchInput,
 		'search-results': SearchResults,
-		'observer': Observer
+		observer: Observer
 	},
 
 	data: function () {
@@ -96,12 +89,6 @@ module.exports = {
 			this.term = newTerm;
 		},
 
-		/**
-		 * Determine if we have more data to load for the tab; If so, make an
-		 * API request to get them, and add them to the appropriate queue.
-		 * Finally, update "continue" and/or "hasmore" properties based on the
-		 * results of the latest request.
-		 */
 		getMoreResultsForTabIfAvailable: function ( tab ) {
 			if ( this.hasMore[ tab ] && !this.pending[ tab ] ) {
 				// If more results are available, and if another request is not
@@ -114,61 +101,40 @@ module.exports = {
 				// If more results are available but another request is
 				// currently in-flight, attempt to make the request again
 				// after some time has passed
-				window.setTimeout( 
+				window.setTimeout(
 					this.getMoreResultsForTabIfAvailable.bind( this, tab ),
-					2000 
+					2000
 				);
 			}
 		},
 
-		/**
-		 * 
-		 */
 		performNewSearch: function () {
 			this.resetResults();
 
-			this.search( { 
+			this.search( {
 				term: this.term,
-				type: this.currentTab 
+				type: this.currentTab
 			} );
 		}
 	} ),
 
 	watch: {
-		/**
-		 * Ensure that "type" query params stay in sync with current active tab
-		 * in the UI
-		 */
 		currentTab: function ( newTab ) {
 			url.query.type = newTab;
 			window.history.replaceState( null, null, '?' + url.getQueryString() );
 		},
 
-		/**
-		 * Ensure that the "q" query params stay in sync with current query
-		 * input from user
-		 */
 		term: function ( newTerm, oldTerm ) {
 			url.query.q = newTerm;
-			window.history.replaceState( null, null, '?' + url.getQueryString() )
+			window.history.replaceState( null, null, '?' + url.getQueryString() );
 
 			if ( newTerm && newTerm !== oldTerm ) {
 				this.performNewSearch();
 			}
 		}
-	},
-
-	/**
-	 * Watch the URL for changes to query params
-	 */
-	mounted: function () {
-	},
-
-	beforeDestroy: function () {
 	}
 };
 </script>
 
 <style lang="less">
-
 </style>

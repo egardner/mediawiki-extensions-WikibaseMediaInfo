@@ -1,22 +1,16 @@
 <template>
 	<div class="wbmi-media-search-quick-view">
 		<header class="wbmi-media-search-quick-view__header">
-			<img 
-				v-bind:src="thumbnail" 
-				alt=""
-				class="wbmi-media-search-quick-view__thumbnail"
-			>
+			<img :src="thumbnail" class="wbmi-media-search-quick-view__thumbnail">
 
-			<button 
-				v-on:click="close"
-				class="wbmi-media-search-quick-view__close-button"
-			>
+			<button class="wbmi-media-search-quick-view__close-button" @click="close">
 				X
 			</button>
 		</header>
 
 		<div class="wbmi-media-search-quick-view__body">
 			<h3>{{ details.title }}</h3>
+			<!-- eslint-disable-next-line vue/no-v-html -->
 			<p v-html="details.metadata.ImageDescription.value"></p>
 		</div>
 	</div>
@@ -25,7 +19,7 @@
 <script>
 /**
  * @file QuickView.vue
- * 
+ *
  * Component to display expanded details about a given search result
  */
 
@@ -33,11 +27,16 @@
 module.exports = {
 	name: 'QuickView',
 
-	props: [ 'details' ],
+	props: {
+		details: {
+			type: Object,
+			required: true
+		}
+	},
 
 	computed: {
 		thumbnail: function () {
-			return this.details.imageinfo[ 0 ].thumburl
+			return this.details.imageinfo[ 0 ].thumburl;
 		}
 	},
 
@@ -61,8 +60,6 @@ module.exports = {
 	margin-top: 8px;
 	top: 16px;
 
-	&__header {}
-
 	&__thumbnail {
 		background-color: @wmui-color-base70;
 		object-fit: contain;
@@ -81,5 +78,4 @@ module.exports = {
 		padding: 16px;
 	}
 }
-
 </style>

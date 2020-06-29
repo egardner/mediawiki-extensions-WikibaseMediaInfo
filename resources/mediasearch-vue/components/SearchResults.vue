@@ -1,27 +1,23 @@
 <template>
 	<div class="wbmi-media-search-results">
-		<div v-bind:class="'wbmi-media-search-results__list--' + mediaType"
+		<div :class="'wbmi-media-search-results__list--' + mediaType"
 			class="wbmi-media-search-results__list">
-
 			<component
+				:is="resultComponent"
 				v-for="(result, index) in sortedResults[ mediaType ]"
-				v-bind:is="resultComponent"
-				v-bind:result="result"
-				v-bind:key="index"
-				v-on:show-details="showDetails"
-			/>
-
+				:key="index"
+				:result="result"
+				@show-details="showDetails"
+			></component>
 		</div>
 
 		<aside class="wbmi-media-search-results__details"
-			v-bind:class="{ 'wbmi-media-search-results__details--expanded': !!details }">
-
-			<quick-view 
+			:class="{ 'wbmi-media-search-results__details--expanded': !!details }">
+			<quick-view
 				v-if="details"
-				v-bind:details="details" 
-				v-on:close="hideDetails"
-			/>
-
+				:details="details"
+				@close="hideDetails"
+			></quick-view>
 		</aside>
 	</div>
 </template>
@@ -29,11 +25,11 @@
 <script>
 /**
  * @file SearchResults.vue
- * 
+ *
  * The SearchResults component is responsible for displaying a list or grid of
  * search results, regardless of media type. Appearance and behavior will vary
  * depending on the value of the mediaType prop.
- * 
+ *
  * The SearchResults component is also responsible for displaying an expanded
  * preview for a specific result if triggered by user actions.
  */
@@ -65,7 +61,7 @@ module.exports = {
 	data: function () {
 		return {
 			details: null
-		}
+		};
 	},
 
 	computed: $.extend( {}, mapState( [
@@ -76,11 +72,11 @@ module.exports = {
 	] ), {
 		resultComponent: function () {
 			if ( this.mediaType === 'bitmap' ) {
-				return 'image-result'
+				return 'image-result';
 			} else if ( this.mediaType === 'video' ) {
-				return 'video-result'
+				return 'video-result';
 			} else {
-				return 'generic-result'
+				return 'generic-result';
 			}
 		}
 	} ),

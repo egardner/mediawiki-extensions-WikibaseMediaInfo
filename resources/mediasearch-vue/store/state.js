@@ -8,6 +8,7 @@ function ensureArray( obj ) {
 	if ( Array.isArray( obj ) ) {
 		return obj;
 	} else {
+		// eslint-disable-next-line es/no-object-values
 		return Object.values( obj );
 	}
 }

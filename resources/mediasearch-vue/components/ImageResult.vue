@@ -1,11 +1,9 @@
 <template>
-	<div class="wbmi-image-result" 
-		v-bind:style="baseWidth"
-		v-on:click="showDetails">
-		<img
-			v-bind:src="thumbnail"
-			v-bind:alt="title"
-		>
+	<div class="wbmi-image-result"
+		:style="baseWidth"
+		@click="showDetails"
+	>
+		<img :src="thumbnail" :alt="title">
 	</div>
 </template>
 

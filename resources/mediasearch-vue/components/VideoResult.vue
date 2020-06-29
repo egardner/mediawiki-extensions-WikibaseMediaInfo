@@ -1,16 +1,14 @@
 <template>
-	<div class="wbmi-video-result" v-on:click="showDetails">
-
-		<img v-bind:src="thumbnail" 
-			v-bind:alt="title"
+	<div class="wbmi-video-result" @click="showDetails">
+		<img
+			:src="thumbnail"
+			:alt="title"
 			class="wbmi-video-result__thumbnail"
 			loading="lazy"
 		>
 
 		<h6 class="wbmi-video-result__title">
-			<a v-bind:href="url">
-				{{ title }}
-			</a>
+			<a :href="url">{{ title }}</a>
 		</h6>
 	</div>
 </template>
@@ -38,10 +36,8 @@ module.exports = {
 				height = this.result.imageinfo[ 0 ].height;
 
 			return width + 'x' + height;
-		},
-
-	},
-
+		}
+	}
 };
 </script>
 
@@ -55,4 +51,3 @@ module.exports = {
 	padding: 8px;
 }
 </style>
-

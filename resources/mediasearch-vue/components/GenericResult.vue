@@ -9,6 +9,11 @@
 module.exports = {
 	name: 'GenericResult',
 
-	props: [ 'result' ]
+	props: {
+		result: {
+			type: Object,
+			required: true
+		}
+	}
 };
 </script>
