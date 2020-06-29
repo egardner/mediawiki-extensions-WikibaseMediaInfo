@@ -65,6 +65,7 @@ module.exports = {
 	},
 
 	computed: $.extend( {}, mapState( [
+		'term',
 		'results',
 		'pending'
 	] ), mapGetters( [
@@ -87,6 +88,13 @@ module.exports = {
 		},
 
 		hideDetails: function () {
+			this.details = null;
+		}
+	},
+
+	watch: {
+		// if search term changes, immediately discard any expanded detail view
+		term: function ( /* newTerm */ ) {
 			this.details = null;
 		}
 	}

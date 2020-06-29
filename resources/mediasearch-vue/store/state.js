@@ -1,6 +1,7 @@
 'use strict';
 
-var initialResults = mw.config.get( 'wbmiInitialSearchResults' );
+var initialResults = mw.config.get( 'wbmiInitialSearchResults' ),
+	initialTerm = new mw.Uri().query.q || '';
 
 // TODO: Remove this, it's just a workaround for now
 // while we use data from Production commons to test features locally
@@ -14,6 +15,11 @@ function ensureArray( obj ) {
 }
 
 module.exports = {
+	/**
+	 * string search term
+	 */
+	term: initialTerm,
+
 	/**
 	 * Arrays of objects broken down by type
 	 */

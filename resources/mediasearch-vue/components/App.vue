@@ -44,12 +44,12 @@ module.exports = {
 
 	data: function () {
 		return {
-			currentTab: url.query.type || '',
-			term: url.query.q || ''
+			currentTab: url.query.type || ''
 		};
 	},
 
 	computed: $.extend( {}, mapState( [
+		'term',
 		'results',
 		'continue',
 		'pending'
@@ -76,7 +76,8 @@ module.exports = {
 	} ),
 
 	methods: $.extend( {}, mapMutations( [
-		'resetResults'
+		'resetResults',
+		'setTerm'
 	] ), mapActions( [
 		'search'
 	] ), {
@@ -86,7 +87,7 @@ module.exports = {
 		},
 
 		onUpdateTerm: function ( newTerm ) {
-			this.term = newTerm;
+			this.setTerm( newTerm );
 		},
 
 		getMoreResultsForTabIfAvailable: function ( tab ) {
