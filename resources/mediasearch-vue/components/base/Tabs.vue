@@ -238,8 +238,7 @@ module.exports = {
 		}
 	}
 
-	&__content {
-		padding-top: 16px;
-	}
+	// &__content {
+	// }
 }
 </style>

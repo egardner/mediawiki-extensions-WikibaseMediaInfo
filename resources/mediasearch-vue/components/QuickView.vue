@@ -10,12 +10,12 @@
 
 		<div class="wbmi-media-search-quick-view__body">
 			<h3>
-				<a :href="details.canonicalurl">
-					{{ details.title }}
+				<a :href="canonicalurl">
+					{{ title }}
 				</a>
 			</h3>
 			<!-- eslint-disable-next-line vue/no-v-html -->
-			<p v-html="details.metadata.ImageDescription.value"></p>
+			<p v-html="metadata.ImageDescription.value"></p>
 		</div>
 	</div>
 </template>
@@ -26,27 +26,64 @@
  *
  * Component to display expanded details about a given search result
  */
-
 // @vue/component
 module.exports = {
 	name: 'QuickView',
 
 	props: {
-		details: {
-			type: Object,
+		title: {
+			type: String,
 			required: true
+		},
+
+		canonicalurl: {
+			type: String,
+			required: true
+		},
+
+		pageid: {
+			type: Number,
+			required: true
+		},
+
+		imageinfo: {
+			type: Array,
+			required: false,
+			default: function () {
+				return [ {} ];
+			}
 		}
 	},
 
 	computed: {
+		/**
+		 * @return {string|undefined}
+		 */
 		thumbnail: function () {
-			return this.details.imageinfo[ 0 ].thumburl;
+			return this.imageinfo[ 0 ].thumburl;
+		},
+
+		/**
+		 * @return {Object|undefined}
+		 */
+		metadata: function () {
+			return this.imageinfo[ 0 ].extmetadata;
 		}
 	},
 
 	methods: {
 		close: function () {
 			this.$emit( 'close' );
+		},
+
+		/**
+		 * Use this method if a non-HTML metadata value is required.
+		 *
+		 * @param {string} raw HTML string
+		 * @return {string}
+		 */
+		stripHTML: function ( raw ) {
+			return $( '<p>' ).append( raw ).text();
 		}
 	}
 };
@@ -62,7 +99,7 @@ module.exports = {
 	box-sizing: @box-shadow-card;
 	position: sticky;
 	margin-top: 8px;
-	top: 16px;
+	top: 8px;
 
 	&__thumbnail {
 		background-color: @wmui-color-base70;

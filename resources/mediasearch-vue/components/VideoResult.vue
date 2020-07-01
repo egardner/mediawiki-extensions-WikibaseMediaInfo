@@ -24,16 +24,16 @@ module.exports = {
 
 	computed: {
 		duration: function () {
-			return Math.round( this.result.imageinfo[ 0 ].duration );
+			return Math.round( this.imageinfo[ 0 ].duration );
 		},
 
 		mime: function () {
-			return this.result.imageinfo[ 0 ].mime;
+			return this.imageinfo[ 0 ].mime;
 		},
 
 		resolution: function () {
-			var width = this.result.imageinfo[ 0 ].width,
-				height = this.result.imageinfo[ 0 ].height;
+			var width = this.imageinfo[ 0 ].width,
+				height = this.imageinfo[ 0 ].height;
 
 			return width + 'x' + height;
 		}
@@ -46,8 +46,8 @@ module.exports = {
 @import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-video-result {
-	.flex( 1, 0, 15% );
 	box-sizing: border-box;
-	padding: 8px;
+	cursor: pointer;
+	margin: 8px;
 }
 </style>

@@ -1,8 +1,5 @@
 <template>
-	<div class="wbmi-image-result"
-		:style="baseWidth"
-		@click="showDetails"
-	>
+	<div class="wbmi-image-result" @click="showDetails">
 		<img :src="thumbnail" :alt="title">
 	</div>
 </template>
@@ -17,21 +14,15 @@ module.exports = {
 
 	computed: {
 		width: function () {
-			return this.result.imageinfo[ 0 ].width;
+			return this.imageinfo[ 0 ].width;
 		},
 
 		height: function () {
-			return this.result.imageinfo[ 0 ].height;
+			return this.imageinfo[ 0 ].height;
 		},
 
 		aspectRatio: function () {
 			return this.width / this.height;
-		},
-
-		baseWidth: function () {
-			return {
-				'flex-basis': Math.round( 180 * this.aspectRatio ) + 'px'
-			};
 		}
 	}
 
@@ -43,12 +34,12 @@ module.exports = {
 @import '../../../lib/wikimedia-ui-base.less';
 
 .wbmi-image-result {
-	.flex( 1, 1, auto );
 	box-sizing: border-box;
-	padding: 8px;
+	cursor: pointer;
+	margin: 8px;
 
-	&:last-child {
-		.flex( 0, 1, auto );
+	&:hover {
+		.box-shadow( 4px 4px 5px -2px @border-color-base );
 	}
 
 	img {
