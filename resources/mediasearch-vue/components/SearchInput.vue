@@ -2,26 +2,18 @@
 	<div class="wbmi-media-search-input">
 		<input
 			v-model="term"
+			:placeholder="$i18n( 'searchbutton' )"
 			class="wbmi-media-search-input__input"
-			type="search"
 			tabindex="0"
 			aria-disabled="false"
 			@keyup.enter="updateTerm"
 		>
 
-		<span class="wbmi-media-search-input__icon">
-			<mw-icon
-				:icon="'search'"
-				:invert="false"
-			></mw-icon>
-		</span>
-
 		<mw-button
 			class="wbmi-media-search-input__button"
 			:primary="true"
 			:progressive="true"
-			@click="updateTerm"
-		>
+			@click="updateTerm">
 			{{ $i18n( 'searchbutton' ) }}
 		</mw-button>
 	</div>
@@ -71,11 +63,11 @@ module.exports = {
 	width: 100%;
 
 	&__input {
-		border: @border-style-base @border-width-base @border-color-base;
 		border-radius: @border-radius-base 0 0 @border-radius-base;
+		border: @border-style-base @border-width-base @border-color-base;
 		font-size: 14px;
+		margin: 0;
 		padding: 6px;
-		padding-left: 36px;
 		width: 100%;
 
 		&:focus {
@@ -91,13 +83,7 @@ module.exports = {
 
 	&__button {
 		border-radius: 0 @border-radius-base @border-radius-base 0;
-	}
-
-	&__icon {
-		left: 3px;
-		opacity: 0.67;
-		padding: 5px;
-		position: absolute;
+		margin: 0;
 	}
 }
 
