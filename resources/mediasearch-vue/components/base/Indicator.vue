@@ -1,10 +1,10 @@
 <template>
-	<div class="mw-indicator">
-		<div class="mw-indicator__inner" @click="$emit('click')">
+	<div class="mw-indicator-component">
+		<div class="mw-indicator-component__inner" @click="$emit('click')">
 			<mw-icon
 				:icon="icon"
 				:invert="true"
-				class="mw-indicator__icon"
+				class="mw-indicator-component__icon"
 			></mw-icon>
 		</div>
 	</div>
@@ -35,7 +35,7 @@ module.exports = {
 @import 'mediawiki.mixins';
 
 /* stylelint-disable selector-class-pattern */
-.mw-indicator {
+.mw-indicator-component {
 	.flex-display();
 	.flex-wrap( nowrap );
 	align-items: center;
@@ -65,13 +65,5 @@ module.exports = {
 		width: 12px;
 		height: 12px;
 	}
-
-	// Override mw-body styles with a high specificity
-	.mw-body & {
-		display: unset;
-		.flex-display();
-		.flex-wrap( nowrap );
-	}
 }
-
 </style>
