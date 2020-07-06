@@ -15,6 +15,13 @@
 					:icon="'search'"
 				></mw-icon>
 			</span>
+
+			<mw-indicator
+				v-if="showIndicator"
+				class="wbmi-media-search-input__input-clear"
+				:icon="'close'"
+				@click="clearInput"
+			></mw-indicator>
 		</div>
 
 		<mw-button
@@ -29,14 +36,16 @@
 
 <script>
 var Button = require( './base/Button.vue' ),
-	Icon = require( './base/Icon.vue' );
+	Icon = require( './base/Icon.vue' ),
+	Indicator = require( './base/Indicator.vue' );
 
 module.exports = {
 	name: 'SearchInput',
 
 	components: {
 		'mw-button': Button,
-		'mw-icon': Icon
+		'mw-icon': Icon,
+		'mw-indicator': Indicator
 	},
 
 	props: {
@@ -49,9 +58,24 @@ module.exports = {
 		};
 	},
 
+	computed: {
+		showIndicator: function () {
+			if ( this.term && this.term.length >= 1 ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	},
+
 	methods: {
 		updateTerm: function () {
 			this.$emit( 'update', this.term );
+		},
+
+		clearInput: function () {
+			this.term = '';
+			this.$emit( 'clear' );
 		}
 	}
 };
@@ -98,7 +122,6 @@ module.exports = {
 
 	&__input-icon {
 		.flex-display();
-		background-color: rbga( 0, 0, 0, 0.5 );
 		flex-direction: column;
 		height: 100%;
 		justify-content: center;
@@ -107,10 +130,15 @@ module.exports = {
 		top: 0;
 	}
 
+	&__input-clear {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
 	&__button {
 		border-radius: 0 @border-radius-base @border-radius-base 0;
 		margin: 0;
 	}
 }
-
 </style>
