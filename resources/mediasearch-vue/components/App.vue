@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="wbmi-media-search" class="wbmi-media-search">
 		<search-input
 			:initial-term="term"
 			@update="onUpdateTerm"
@@ -25,6 +25,7 @@
 
 				<mw-message
 					v-else-if="noResults[ tab ]"
+					class="wbmi-media-search__no-results"
 					:type="'notice'">
 					{{ $i18n( 'wikibasemediainfo-special-mediasearch-no-results' ) }}
 				</mw-message>
@@ -219,3 +220,15 @@ module.exports = {
 	}
 };
 </script>
+
+<style lang="less">
+@import 'mediawiki.mixins';
+@import '../../../lib/wikimedia-ui-base.less';
+
+.wbmi-media-search {
+	&__no-results {
+		margin: 24px auto;
+	}
+}
+
+</style>
