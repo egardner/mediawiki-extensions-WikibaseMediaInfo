@@ -22,6 +22,12 @@
 				<p v-if="pending[ tab ]">
 					Loading...
 				</p>
+
+				<mw-message
+					v-else-if="noResults[ tab ]"
+					:type="'notice'">
+					{{ $i18n( 'wikibasemediainfo-special-mediasearch-no-results' ) }}
+				</mw-message>
 			</tab>
 		</tabs>
 	</div>
@@ -51,6 +57,7 @@ var mapState = require( 'vuex' ).mapState,
 	SearchInput = require( './SearchInput.vue' ),
 	SearchResults = require( './SearchResults.vue' ),
 	Observer = require( './base/Observer.vue' ),
+	Message = require( './base/Message.vue' ),
 	url = new mw.Uri();
 
 // @vue/component
@@ -62,7 +69,8 @@ module.exports = {
 		tab: Tab,
 		'search-input': SearchInput,
 		'search-results': SearchResults,
-		observer: Observer
+		observer: Observer,
+		'mw-message': Message
 	},
 
 	data: function () {
@@ -77,9 +85,9 @@ module.exports = {
 		'continue',
 		'pending'
 	] ), mapGetters( [
-		'hasMore'
+		'hasMore',
+		'noResults'
 	] ), {
-
 		/**
 		 * @return {string[]} [ 'bitmap', 'video', 'audio', 'category' ]
 		 */

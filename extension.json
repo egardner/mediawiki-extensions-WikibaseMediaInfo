@@ -360,6 +360,7 @@
 				"wikibasemediainfo-special-mediasearch-tab-audio",
 				"wikibasemediainfo-special-mediasearch-tab-video",
 				"wikibasemediainfo-special-mediasearch-tab-category",
+				"wikibasemediainfo-special-mediasearch-no-results",
 				"searchbutton"
 			],
 			"dependencies": [
