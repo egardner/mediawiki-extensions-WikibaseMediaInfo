@@ -4,9 +4,14 @@
 		<header class="wbmi-media-search-quick-view__header">
 			<img :src="thumbnail" class="wbmi-media-search-quick-view__thumbnail">
 
-			<button class="wbmi-media-search-quick-view__close-button" @click="close">
-				X
-			</button>
+			<a tabindex="0"
+				class="wbmi-media-search-quick-view__close-button"
+				role="button"
+				@keyup.enter="close"
+				@click="close">
+				<mw-icon :icon="'close'">
+				</mw-icon>
+			</a>
 		</header>
 
 		<!-- File details: most of this information comes from the Commons
@@ -70,6 +75,12 @@
 <script>
 var Icon = require( './base/Icon.vue' ),
 	Button = require( './base/Button.vue' );
+
+// Helper function to check for date validity
+function isValidDate( d ) {
+	return d instanceof Date && !isNaN( d );
+}
+
 /**
  * @file QuickView.vue
  *
@@ -177,8 +188,29 @@ module.exports = {
 		 * @return {string|null} String that may contain HTML
 		 */
 		creationDate: function () {
+			var d;
+
 			if ( this.metadata && this.metadata.DateTimeOriginal ) {
-				return this.metadata.DateTimeOriginal.value;
+				d = new Date( this.metadata.DateTimeOriginal.value );
+
+				// If we have a value for DateTimeOriginal at all, create a date
+				// object using that value and test for validity (JS unhelpfully
+				// doesn't throw an error in the Date constructor if invalid).
+				// If we are dealing with a parseable date value, return a
+				// consistently-formatted string.
+				//
+				// Otherwise just return whatever the original string was in the
+				// hope that it will make sense to the user.
+				if ( isValidDate( d ) ) {
+					return d.toLocaleDateString( undefined, {
+						day: 'numeric',
+						year: 'numeric',
+						month: 'long'
+					} );
+				} else {
+					return this.metadata.DateTimeOriginal.value;
+				}
+
 			} else {
 				return null;
 			}
@@ -255,15 +287,10 @@ module.exports = {
 		width: 100%;
 	}
 
-	&__close-button {
-		position: absolute;
-		top: 8px;
-		left: 8px;
-	}
-
 	&__body {
 		padding: 16px;
 
+		// stylelint-disable-next-line selector-class-pattern
 		.mw-icon {
 			opacity: 0.33;
 			margin-right: 4px;
@@ -279,6 +306,35 @@ module.exports = {
 		// to fit...
 		> * {
 			max-width: 100%;
+		}
+	}
+
+	&__close-button {
+		.flex-display();
+		align-items: center;
+		background-color: @background-color-base;
+		border-radius: 15px;
+		box-sizing: border-box;
+		height: 30px;
+		justify-content: center;
+		left: 8px;
+		padding: 0;
+		position: absolute;
+		top: 8px;
+		width: 30px;
+
+		// stylelint-disable-next-line selector-class-pattern
+		.mw-icon {
+			opacity: 0.5;
+			transition: opacity @transition-base;
+		}
+
+		&:hover,
+		&:focus {
+			// stylelint-disable-next-line selector-class-pattern
+			.mw-icon {
+				opacity: 1;
+			}
 		}
 	}
 }
