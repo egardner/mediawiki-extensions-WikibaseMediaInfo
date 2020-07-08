@@ -2,7 +2,32 @@
 	<!-- eslint-disable vue/no-v-html -->
 	<div class="wbmi-media-search-quick-view">
 		<header class="wbmi-media-search-quick-view__header">
-			<img :src="thumbnail" class="wbmi-media-search-quick-view__thumbnail">
+			<img v-if="isBitmap"
+				:src="thumbnail"
+				class="wbmi-media-search-quick-view__thumbnail"
+			>
+
+			<video v-else-if="isVideo"
+				controls
+				class="wbmi-media-search-quick-view__thumbnail
+					wbmi-media-search-quick-view__thumbnail--video">
+
+				<source
+					:src="imageinfo[ 0 ].url"
+					:type="mimeType"
+				>
+			</video>
+
+			<audio v-else-if="isAudio"
+				controls
+				class="wbmi-media-search-quick-view__thumbnail
+					wbmi-media-search-quick-view__thumbnail--audio">
+
+				<source
+					:src="imageinfo[ 0 ].url"
+					:type="mimeType"
+				>
+			</audio>
 
 			<a tabindex="0"
 				class="wbmi-media-search-quick-view__close-button"
@@ -117,10 +142,28 @@ module.exports = {
 			default: function () {
 				return [ {} ];
 			}
+		},
+
+		mediaType: {
+			type: String,
+			required: false,
+			default: 'bitmap'
 		}
 	},
 
 	computed: {
+		isBitmap: function () {
+			return this.mediaType === 'bitmap';
+		},
+
+		isVideo: function () {
+			return this.mediaType === 'video';
+		},
+
+		isAudio: function () {
+			return this.mediaType === 'audio';
+		},
+
 		/**
 		 * @return {string|undefined}
 		 */
@@ -161,7 +204,7 @@ module.exports = {
 		 * @return {string|null}
 		 */
 		licenseText: function () {
-			if ( this.metadata ) {
+			if ( this.metadata && this.metadata.UsageTerms ) {
 				return this.metadata.UsageTerms.value;
 			} else {
 				return null;
@@ -285,6 +328,10 @@ module.exports = {
 		height: auto;
 		max-height: 300px;
 		width: 100%;
+
+		&--audio {
+			padding-top: 48px;
+		}
 	}
 
 	&__body {
