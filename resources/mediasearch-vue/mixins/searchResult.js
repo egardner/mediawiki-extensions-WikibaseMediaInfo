@@ -37,6 +37,16 @@ module.exports = {
 		index: {
 			type: Number,
 			required: true
+		},
+
+		name: {
+			type: String,
+			required: false
+		},
+
+		terms: {
+			type: Object,
+			required: false
 		}
 	},
 

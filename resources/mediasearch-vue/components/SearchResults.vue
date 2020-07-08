@@ -15,7 +15,9 @@
 			:class="{ 'wbmi-media-search-results__details--expanded': !!details }">
 			<quick-view
 				v-if="details"
+				:key="details.pageid"
 				v-bind="details"
+				:media-type="mediaType"
 				@close="hideDetails">
 			</quick-view>
 		</aside>
@@ -36,6 +38,7 @@
 var mapState = require( 'vuex' ).mapState,
 	mapGetters = require( 'vuex' ).mapGetters,
 	ImageResult = require( './ImageResult.vue' ),
+	AudioResult = require( './AudioResult.vue' ),
 	VideoResult = require( './VideoResult.vue' ),
 	GenericResult = require( './GenericResult.vue' ),
 	QuickView = require( './QuickView.vue' );
@@ -47,6 +50,7 @@ module.exports = {
 	components: {
 		'image-result': ImageResult,
 		'video-result': VideoResult,
+		'audio-result': AudioResult,
 		'generic-result': GenericResult,
 		'quick-view': QuickView
 	},
@@ -81,6 +85,8 @@ module.exports = {
 				return 'image-result';
 			} else if ( this.mediaType === 'video' ) {
 				return 'video-result';
+			} else if ( this.mediaType === 'audio' ) {
+				return 'audio-result';
 			} else {
 				return 'generic-result';
 			}
@@ -160,6 +166,13 @@ module.exports = {
 	&__list {
 		.flex( 1, 1, auto );
 
+		// Audio results are limited to half-width
+		&--audio {
+			> * {
+				max-width: 50em;
+			}
+		}
+
 		// Lists of type "bitmap" or "video" display their results in a grid
 		// and are allowed to wrap.
 		&--bitmap,
@@ -199,7 +212,7 @@ module.exports = {
 	// is smaller
 	&__details {
 		.flex( 0, 0, auto );
-		max-width: 30rem;
+		max-width: 40em;
 		width: 0%;
 
 		&--expanded {
