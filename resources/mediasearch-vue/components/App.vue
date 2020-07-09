@@ -19,9 +19,8 @@
 				<observer @intersect="getMoreResultsForTabIfAvailable( tab )">
 				</observer>
 
-				<p v-if="pending[ tab ]">
-					Loading...
-				</p>
+				<mw-spinner v-if="pending[ tab ]">
+				</mw-spinner>
 			</tab>
 		</tabs>
 	</div>
@@ -51,6 +50,7 @@ var mapState = require( 'vuex' ).mapState,
 	SearchInput = require( './SearchInput.vue' ),
 	SearchResults = require( './SearchResults.vue' ),
 	Observer = require( './base/Observer.vue' ),
+	Spinner = require( './Spinner.vue' ),
 	url = new mw.Uri();
 
 // @vue/component
@@ -62,7 +62,8 @@ module.exports = {
 		tab: Tab,
 		'search-input': SearchInput,
 		'search-results': SearchResults,
-		observer: Observer
+		observer: Observer,
+		'mw-spinner': Spinner
 	},
 
 	data: function () {

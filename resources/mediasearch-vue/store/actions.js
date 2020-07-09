@@ -67,17 +67,24 @@ module.exports = {
 
 		// Use this for testing:
 		return $.get( 'https://commons.wikimedia.org/w/api.php', params ).then( function ( response ) {
-			var results, pageIDs;
+			var results, pageIDs, sortedResults;
 
 			if ( response.query && response.query.pages ) {
 				results = response.query.pages;
 				pageIDs = Object.keys( results );
 
-				// Add each result object to the appropriate results queue
-				pageIDs.forEach( function ( id ) {
+				// Sort the results within each batch prior to committing them
+				// to the store
+				sortedResults = pageIDs.map( function ( id ) {
+					return results[ id ];
+				} ).sort( function ( a, b ) {
+					return a.index - b.index;
+				} );
+
+				sortedResults.forEach( function ( result ) {
 					context.commit( 'addResult', {
 						type: options.type,
-						item: results[ id ]
+						item: result
 					} );
 				} );
 			}

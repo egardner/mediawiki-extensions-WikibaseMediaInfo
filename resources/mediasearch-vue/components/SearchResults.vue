@@ -4,7 +4,7 @@
 			class="wbmi-media-search-results__list">
 			<component
 				:is="resultComponent"
-				v-for="(result, index) in sortedResults[ mediaType ]"
+				v-for="(result, index) in results[ mediaType ]"
 				:key="index"
 				v-bind="result"
 				@show-details="showDetails">
@@ -36,7 +36,6 @@
  * preview for a specific result if triggered by user actions.
  */
 var mapState = require( 'vuex' ).mapState,
-	mapGetters = require( 'vuex' ).mapGetters,
 	ImageResult = require( './ImageResult.vue' ),
 	AudioResult = require( './AudioResult.vue' ),
 	VideoResult = require( './VideoResult.vue' ),
@@ -72,8 +71,6 @@ module.exports = {
 		'term',
 		'results',
 		'pending'
-	] ), mapGetters( [
-		'sortedResults'
 	] ), {
 		/**
 		 * Which component should be used to display individual search results
