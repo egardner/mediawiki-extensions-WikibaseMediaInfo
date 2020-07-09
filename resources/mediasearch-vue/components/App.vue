@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="wbmi-media-search" class="wbmi-media-search">
 		<search-input
 			:initial-term="term"
 			@update="onUpdateTerm"
@@ -22,6 +22,13 @@
 				<p v-if="pending[ tab ]">
 					Loading...
 				</p>
+
+				<mw-message
+					v-else-if="noResults[ tab ]"
+					class="wbmi-media-search__no-results"
+					:type="'notice'">
+					{{ $i18n( 'wikibasemediainfo-special-mediasearch-no-results' ) }}
+				</mw-message>
 			</tab>
 		</tabs>
 	</div>
@@ -51,6 +58,7 @@ var mapState = require( 'vuex' ).mapState,
 	SearchInput = require( './SearchInput.vue' ),
 	SearchResults = require( './SearchResults.vue' ),
 	Observer = require( './base/Observer.vue' ),
+	Message = require( './base/Message.vue' ),
 	url = new mw.Uri();
 
 // @vue/component
@@ -62,7 +70,8 @@ module.exports = {
 		tab: Tab,
 		'search-input': SearchInput,
 		'search-results': SearchResults,
-		observer: Observer
+		observer: Observer,
+		'mw-message': Message
 	},
 
 	data: function () {
@@ -77,9 +86,9 @@ module.exports = {
 		'continue',
 		'pending'
 	] ), mapGetters( [
-		'hasMore'
+		'hasMore',
+		'noResults'
 	] ), {
-
 		/**
 		 * @return {string[]} [ 'bitmap', 'video', 'audio', 'category' ]
 		 */
@@ -211,3 +220,15 @@ module.exports = {
 	}
 };
 </script>
+
+<style lang="less">
+@import 'mediawiki.mixins';
+@import '../../../lib/wikimedia-ui-base.less';
+
+.wbmi-media-search {
+	&__no-results {
+		margin: 24px auto;
+	}
+}
+
+</style>

@@ -24,5 +24,14 @@ module.exports = {
 			video: sortCopy( state.results.video ),
 			category: sortCopy( state.results.category )
 		};
+	},
+
+	noResults: function ( state ) {
+		return {
+			bitmap: state.results.bitmap.length === 0,
+			audio: state.results.audio.length === 0,
+			video: state.results.video.length === 0,
+			category: state.results.category.length === 0
+		};
 	}
 };
