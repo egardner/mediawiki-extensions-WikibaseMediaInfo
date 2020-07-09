@@ -20,48 +20,17 @@
 </template>
 
 <script>
-var searchResult = require( '../mixins/searchResult.js' );
+var searchResult = require( '../mixins/searchResult.js' ),
+	searchResultTimeBased = require( '../mixins/searchResultTimeBased.js' );
 
 // @vue/component
 module.exports = {
 	name: 'AudioResult',
 
-	mixins: [ searchResult ],
-
-	computed: {
-		duration: function () {
-			if ( this.imageinfo && this.imageinfo[ 0 ].duration ) {
-				return Math.round( this.imageinfo[ 0 ].duration );
-			} else {
-				return null;
-			}
-		},
-
-		formattedDuration: function () {
-			var minutes,
-				seconds;
-
-			if ( this.duration ) {
-				minutes = '0' + Math.floor( this.duration / 60 );
-				seconds = '0' + this.duration % 60;
-				return minutes.substr( -2 ) + ':' + seconds.substr( -2 );
-			} else {
-				return null;
-			}
-		},
-
-		mime: function () {
-			return this.imageinfo[ 0 ].mime;
-		},
-
-		label: function () {
-			if ( this.terms && this.terms.label ) {
-				return this.terms.label[ 0 ];
-			} else {
-				return null;
-			}
-		}
-	}
+	mixins: [
+		searchResult,
+		searchResultTimeBased
+	]
 };
 </script>
 

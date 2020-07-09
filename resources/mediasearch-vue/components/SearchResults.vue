@@ -191,7 +191,7 @@ module.exports = {
 		&--video {
 			// stylelint-disable-next-line no-descending-specificity
 			> * {
-				.flex( 1, 0, 15% );
+				.flex( 1, 1, 200px );
 			}
 		}
 
