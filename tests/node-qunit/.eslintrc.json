@@ -9,7 +9,9 @@
 		"browser": true
 	},
 	"rules": {
+		"no-implicit-globals": "off",
 		"max-len": "off",
+		"es/no-object-assign": "off",
 		"node/no-missing-require": "off"
 	}
 }

@@ -4,6 +4,12 @@
 		"wikimedia/selenium"
 	],
 	"globals": {
+		"browser": false,
+		"$": false
+	},
+	"rules": {
+		"no-var": "warn",
+		"strict": "warn",
 		"mw": "readonly"
 	}
 }
