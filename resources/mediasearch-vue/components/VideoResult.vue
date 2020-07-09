@@ -1,11 +1,10 @@
 <template>
-	<div class="wbmi-video-result">
+	<div class="wbmi-video-result" @click="showDetails">
 		<img
 			:src="thumbnail"
 			:alt="title"
 			class="wbmi-video-result__thumbnail"
 			loading="lazy"
-			@click="showDetails"
 		>
 
 		<div class="wbmi-video-result__body">
@@ -16,10 +15,13 @@
 				</a>
 			</h3>
 
-			<h4 v-if="formattedDuration && mime"
-				class="wbmi-video-result__meta">
-				<span class="wbmi-video-result__duration">{{ formattedDuration }}</span>
-				<span class="wbmi-video-result__mime">{{ mime }}</span>
+			<h4 v-if="formattedDuration || mime" class="wbmi-video-result__meta">
+				<span v-if="formattedDuration" class="wbmi-video-result__duration">
+					{{ formattedDuration }}
+				</span>
+				<span v-if="mime" class="wbmi-video-result__mime">
+					{{ mime }}
+				</span>
 			</h4>
 		</div>
 	</div>
