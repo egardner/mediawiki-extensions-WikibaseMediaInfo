@@ -40,7 +40,8 @@ var mapState = require( 'vuex' ).mapState,
 	AudioResult = require( './AudioResult.vue' ),
 	VideoResult = require( './VideoResult.vue' ),
 	GenericResult = require( './GenericResult.vue' ),
-	QuickView = require( './QuickView.vue' );
+	QuickView = require( './QuickView.vue' ),
+	api = new mw.Api();
 
 // @vue/component
 module.exports = {
@@ -133,11 +134,10 @@ module.exports = {
 			};
 
 			// Real version: use mw.api
-			// return api.get( params ).then( function ( response ) {
-			// } );
+			return api.get( params );
 
 			// Test version: use production commons API
-			return $.get( 'https://commons.wikimedia.org/w/api.php', params );
+			// return $.get( 'https://commons.wikimedia.org/w/api.php', params );
 		}
 	},
 

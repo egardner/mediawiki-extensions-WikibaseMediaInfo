@@ -1,7 +1,6 @@
 'use strict';
 
 var LIMIT = 40,
-	// eslint-disable-next-line no-unused-vars
 	api = new mw.Api();
 
 module.exports = {
@@ -62,11 +61,10 @@ module.exports = {
 			pending: true
 		} );
 
-		// return api.get( params ).then( function ( response ) {
-		// } );
+		// Use for testing
+		// return $.get( 'https://commons.wikimedia.org/w/api.php', params ).then( function ( response ) {
 
-		// Use this for testing:
-		return $.get( 'https://commons.wikimedia.org/w/api.php', params ).then( function ( response ) {
+		return api.get( params ).then( function ( response ) {
 			var results, pageIDs, sortedResults;
 
 			if ( response.query && response.query.pages ) {
